@@ -1,49 +1,103 @@
+import PropTypes from "prop-types";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-import PropTypes from 'prop-types';
+const formSchema = yup.object().shape({
+  firstname: yup.string().required("First name is required"),
+  lastname: yup.string().required("Last name is required"),
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Confirm password is required"),
+});
 
-const SignUp =({toggle})=> {
-    
-    return (
-        <div className="col align-items-center flex-col sign-up">
-        <div className="form-wrapper align-items-center">
-          <div className="form sign-up">
-            <div className="input-group">
-              <i className="bx bxs-user"></i>
-              <input type="text" placeholder="Firstname" />
-            </div>
-            <div className="input-group">
-              <i className="bx bxs-user"></i>
-              <input type="text" placeholder="Lastname" />
-            </div>
-            <div className="input-group">
-              <i className="bx bx-mail-send"></i>
-              <input type="email" placeholder="Email" />
-            </div>
-            <div className="input-group">
-              <i className="bx bxs-lock-alt"></i>
-              <input type="password" placeholder="Password" />
-            </div>
-            <div className="input-group">
-              <i className="bx bxs-lock-alt"></i>
-              <input type="password" placeholder="Confirm password" />
-            </div>
-            <button>Sign up</button>
-            <p>
-              <span>Already have an account?</span>
-              <b onClick={toggle} className="pointer">
-                Sign in here
-              </b>
-            </p>
+const SignUp = ({ toggle }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(formSchema) });
+
+  const onSubmit = (data) => console.log(data);
+  console.log(errors);
+
+  return (
+    <div className="col align-items-center flex-col sign-up">
+      <div className="form-wrapper align-items-center">
+        <form className="form sign-up" onSubmit={handleSubmit(onSubmit)}>
+          <div className="input-group">
+            <i className="bx bxs-user"></i>
+            <input
+              type="text"
+              placeholder="First name"
+              {...register("firstname")}
+            />
+            {errors.firstname && (
+              <p className="error">{errors.firstname.message}</p>
+            )}
           </div>
-        </div>
+          <div className="input-group">
+            <i className="bx bxs-user"></i>
+            <input
+              type="text"
+              placeholder="Last name"
+              {...register("lastname")}
+            />
+            {errors.lastname && (
+              <p className="error">{errors.lastname.message}</p>
+            )}
+          </div>
+          <div className="input-group">
+            <i className="bx bx-mail-send"></i>
+            <input type="text" placeholder="Email" {...register("email")} />
+            {errors.email && <p className="error">{errors.email.message}</p>}
+          </div>
+          <div className="input-group">
+            <i className="bx bxs-lock-alt"></i>
+            <input
+              type="password"
+              placeholder="Password"
+              {...register("password")}
+            />
+            {errors.password && (
+              <p className="error">{errors.password.message}</p>
+            )}
+          </div>
+          <div className="input-group">
+            <i className="bx bxs-lock-alt"></i>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              {...register("confirmPassword")}
+            />
+            {errors.confirmPassword && (
+              <p className="error">{errors.confirmPassword.message}</p>
+            )}
+          </div>
+          <button type="submit"> Sign up</button>
+          <p>
+            <span>Already have an account?</span>
+            <b onClick={toggle} className="pointer">
+              Sign in here
+            </b>
+          </p>
+        </form>
       </div>
-    )
-    
-  }
-  
-  SignUp.propTypes ={
-    toggle:PropTypes.func
-  }
-  
-  export default SignUp
-  
+    </div>
+  );
+};
+
+SignUp.propTypes = {
+  toggle: PropTypes.func,
+};
+
+export default SignUp;

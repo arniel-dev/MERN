@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import "./login.css"; 
-import SignUp from "../../src/components/SignUp";
-import SignIn from "../../src/components/SignIn";
-import SideContent from "../../src/components/sideContent";
-
+import "./login.css";
+import SignUp from "../../components/SignUp";
+import SignIn from "../../components/SignIn";
+import SideContent from "../../components/sideContent";
 
 const LoginPage = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -18,11 +17,14 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className={`container ${isSignIn ? "sign-in" : "sign-up"}`} id="container">
+    <div
+      className={`container ${isSignIn ? "sign-in" : "sign-up"}`}
+      id="container"
+    >
       {/* FORM SECTION */}
       <div className="row">
         <SignUp toggle={toggle} />
-        <SignIn toggle={toggle}/>
+        <SignIn toggle={toggle} />
       </div>
       <SideContent />
     </div>
