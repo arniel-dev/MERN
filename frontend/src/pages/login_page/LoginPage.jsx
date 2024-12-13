@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "./login.css";
-import SignUp from "../../components/SignUp";
-import SignIn from "../../components/SignIn";
-import SideContent from "../../components/sideContent";
+import SignUp from "../../components/login/SignUp";
+import SignIn from "../../components/login/SignIn";
+import SideContent from "../../components/login/SideContent";
 
 const LoginPage = () => {
   const [isSignIn, setIsSignIn] = useState(true);

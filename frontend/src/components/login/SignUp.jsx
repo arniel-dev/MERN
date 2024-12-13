@@ -2,6 +2,10 @@ import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import useAxiosPost from "../../api/useAxiosPost";
+import useToast from "../../hooks/useToast";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 const formSchema = yup.object().shape({
   firstname: yup.string().required("First name is required"),
@@ -21,14 +25,36 @@ const formSchema = yup.object().shape({
 });
 
 const SignUp = ({ toggle }) => {
+  const { setURL, setRequest, status, response, cleanUp, resErrMsg } =
+    useAxiosPost();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(formSchema) });
 
-  const onSubmit = (data) => console.log(data);
-  console.log(errors);
+  const onSubmit = (data) => {
+    setURL("api/users/signup");
+    setRequest(data);
+  };
+
+  useEffect(() => {
+    if (status === 201) {
+      showToast(response?.message, "success");
+      cleanUp().then(() => {
+        setTimeout(() => {
+          navigate(0);
+        }, 1000);
+      });
+    }
+    if (resErrMsg) {
+      showToast(resErrMsg?.response?.data?.message, "error");
+      cleanUp();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, resErrMsg]);
 
   return (
     <div className="col align-items-center flex-col sign-up">

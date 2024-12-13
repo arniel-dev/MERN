@@ -44,14 +44,20 @@ export const loginUser = async (email, password) => {
       email,
     ]);
     if (rows.length === 0) {
-      return { success: false, message: "User not found" };
+      return {
+        success: false,
+        message: "Login failed; Invalid email address or password",
+      };
     }
 
     const user = rows[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return { success: false, message: "Incorrect password" };
+      return {
+        success: false,
+        message: "Invalid email address or password",
+      };
     }
 
     // Generate JWT token
