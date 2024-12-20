@@ -7,6 +7,8 @@ const createUserTableQuery = `CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255),
     role ENUM('user', 'admin', 'super-admin'),
     is_approved BOOLEAN DEFAULT false,
+    reset_token VARCHAR(255) DEFAULT NULL,
+    reset_token_expiry DATETIME DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);`;
 
 const createTable = async (tableName, query) => {
