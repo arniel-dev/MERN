@@ -2,6 +2,7 @@
 import { createContext, useState } from "react";
 import ToastContainer from "../components/toast/ToastManager";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const ToastContext = createContext();
 
 // eslint-disable-next-line react/prop-types

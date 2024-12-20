@@ -6,10 +6,14 @@ import useAxiosPost from "../../api/useAxiosPost";
 import useToast from "../../hooks/useToast";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Link from "@mui/material/Link";
 
 const formSchema = yup.object().shape({
-  firstname: yup.string().required("First name is required"),
-  lastname: yup.string().required("Last name is required"),
+  fullname: yup.string().required("Full name is required"),
   email: yup
     .string()
     .email("Invalid email format")
@@ -58,66 +62,74 @@ const SignUp = ({ toggle }) => {
 
   return (
     <div className="col align-items-center flex-col sign-up">
-      <div className="form-wrapper align-items-center">
-        <form className="form sign-up" onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-group">
-            <i className="bx bxs-user"></i>
-            <input
-              type="text"
-              placeholder="First name"
-              {...register("firstname")}
-            />
-            {errors.firstname && (
-              <p className="error">{errors.firstname.message}</p>
-            )}
-          </div>
-          <div className="input-group">
-            <i className="bx bxs-user"></i>
-            <input
-              type="text"
-              placeholder="Last name"
-              {...register("lastname")}
-            />
-            {errors.lastname && (
-              <p className="error">{errors.lastname.message}</p>
-            )}
-          </div>
-          <div className="input-group">
-            <i className="bx bx-mail-send"></i>
-            <input type="text" placeholder="Email" {...register("email")} />
-            {errors.email && <p className="error">{errors.email.message}</p>}
-          </div>
-          <div className="input-group">
-            <i className="bx bxs-lock-alt"></i>
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="error">{errors.password.message}</p>
-            )}
-          </div>
-          <div className="input-group">
-            <i className="bx bxs-lock-alt"></i>
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              {...register("confirmPassword")}
-            />
-            {errors.confirmPassword && (
-              <p className="error">{errors.confirmPassword.message}</p>
-            )}
-          </div>
-          <button type="submit"> Sign up</button>
-          <p>
-            <span>Already have an account?</span>
-            <b onClick={toggle} className="pointer">
-              Sign in here
-            </b>
-          </p>
-        </form>
-      </div>
+      <Stack
+        className="form-wrapper align-items-center"
+        spacing={2}
+        direction="column"
+      >
+        {/* <form className="form sign-up" onSubmit={handleSubmit(onSubmit)}> */}
+        <Box
+          className="form sign-up"
+          component="form"
+          sx={{ "& .MuiTextField-root": { m: 2, width: "90%" } }}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <TextField
+            id="fullname"
+            label="Full name"
+            {...register("fullname")}
+            variant="outlined"
+            error={!!errors.fullname}
+            helperText={errors?.fullname?.message}
+          />
+          <TextField
+            id="email"
+            label="Email"
+            {...register("email")}
+            variant="outlined"
+            error={!!errors.email}
+            helperText={errors?.email?.message}
+          />
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            {...register("password")}
+            variant="outlined"
+            error={!!errors.password}
+            helperText={errors?.password?.message}
+          />
+          <TextField
+            id="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            {...register("confirmPassword")}
+            variant="outlined"
+            error={!!errors.confirmPassword}
+            helperText={errors?.confirmPassword?.message}
+          />
+          <Button sx={{ mt: 2 }} type="submit" variant="contained">
+            Sign up
+          </Button>
+          <Box component="div" sx={{ m: 2 }}>
+            <div>
+              <span>Already have an account?</span>
+              <Link
+                component="span"
+                variant="body2"
+                onClick={toggle}
+                underline="hover"
+                aria-label=""
+                sx={{ cursor: "pointer" }}
+              >
+                Sign up here
+              </Link>
+            </div>
+          </Box>
+        </Box>
+      </Stack>
     </div>
   );
 };

@@ -2,17 +2,17 @@ import { createUser, loginUser } from "../services/authServices.js";
 import UserModel from "../models/userModel.js";
 
 export const signUp = async (req, res) => {
-  const { email, firstname, lastname, password, role } = req.body;
+  const { email, fullname, password, role } = req.body;
 
   // Validate required fields
-  if (!email || !firstname || !lastname || !password) {
+  if (!email || !fullname || !password) {
     return res
       .status(400)
       .json({ success: false, message: "All fields are required" });
   }
 
   // Create user instance
-  const user = new UserModel({ email, firstname, lastname, password, role });
+  const user = new UserModel({ email, fullname, password, role });
 
   try {
     // Create user using auth service

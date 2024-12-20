@@ -3,8 +3,7 @@ import { pool } from "../config/db.js";
 const createUserTableQuery = `CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) UNIQUE,
-    firstname VARCHAR(255),
-    lastname VARCHAR(255),
+    fullname VARCHAR(255),
     password VARCHAR(255),
     role ENUM('user', 'admin', 'super-admin'),
     is_approved BOOLEAN DEFAULT false,

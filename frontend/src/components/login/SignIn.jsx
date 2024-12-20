@@ -5,9 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import useAxiosPost from "../../api/useAxiosPost";
 import useToast from "../../hooks/useToast";
-
 import { useNavigate } from "react-router";
-
+import useAuth from "../../hooks/useAuth";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Link from "@mui/material/Link";
 const formSchema = yup.object().shape({
   email: yup
     .string()
@@ -24,6 +28,7 @@ const SignIn = ({ toggle }) => {
     useAxiosPost();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -38,6 +43,7 @@ const SignIn = ({ toggle }) => {
   useEffect(() => {
     if (status === 200) {
       showToast(response?.message, "success");
+      login(response?.token);
       cleanUp().then(() => {
         setTimeout(() => {
           navigate("/", { replace: true });
@@ -52,38 +58,67 @@ const SignIn = ({ toggle }) => {
   }, [status, resErrMsg]);
   return (
     <div className="col align-items-center flex-col sign-in">
-      <div className="form-wrapper align-items-center">
-        {/* <div className="form sign-in"> */}
-        <form className="form sign-in" onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-group">
-            <i className="bx bx-mail-send"></i>
-            <input type="text" placeholder="Email" {...register("email")} />
-            {errors.email && <p className="error">{errors.email.message}</p>}
-          </div>
-          <div className="input-group">
-            <i className="bx bxs-lock-alt"></i>
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="error">{errors.password.message}</p>
-            )}
-          </div>
-          <button type="submit">Sign in</button>
-          <p>
-            <b>Forgot password?</b>
-          </p>
-          <p>
-            <span>Don't have an account?</span>
-            <b onClick={toggle} className="pointer">
-              Sign up here
-            </b>
-          </p>
-          {/* </div> */}
-        </form>
-      </div>
+      <Stack
+        className="form-wrapper align-items-center"
+        spacing={2}
+        direction="column"
+      >
+        <Box
+          className="form sign-in"
+          component="form"
+          sx={{ "& .MuiTextField-root": { m: 2, width: "90%" } }}
+          noValidate
+          autoComplete="off"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <TextField
+            id="email"
+            label="Email"
+            {...register("email")}
+            variant="outlined"
+            error={!!errors.email}
+            helperText={errors?.email?.message}
+          />
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            {...register("password")}
+            variant="outlined"
+            error={!!errors.password}
+            helperText={errors?.password?.message}
+          />
+          <Button sx={{ mt: 2 }} type="submit" variant="contained">
+            Sign in
+          </Button>
+          <Box component="div" sx={{ m: 2 }}>
+            <Link
+              component="b"
+              variant="body2"
+              onClick={toggle}
+              underline="hover"
+              aria-label=""
+              sx={{ cursor: "pointer" }}
+            >
+              Forgot password?
+            </Link>
+
+            <div>
+              <span>Don't have an account?</span>
+              <Link
+                component="span"
+                variant="body2"
+                onClick={toggle}
+                underline="hover"
+                aria-label=""
+                sx={{ cursor: "pointer" }}
+              >
+                Sign up here
+              </Link>
+            </div>
+          </Box>
+        </Box>
+      </Stack>
     </div>
   );
 };

@@ -1,8 +1,7 @@
 class UserModel {
   constructor(user) {
     this.email = user.email;
-    this.firstname = user.firstname;
-    this.lastname = user.lastname;
+    this.fullname = user.fullname;
     this.password = user.password;
     this.role = user.role;
   }

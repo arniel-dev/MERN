@@ -18,11 +18,10 @@ export const createUser = async (user) => {
     }
 
     const hashedPassword = await bcrypt.hash(user.password, 10);
-    const query = `INSERT INTO users (email, firstname, lastname, password, role ) VALUES (?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO users (email, fullname, password, role ) VALUES (?, ?, ?, ?)`;
     const values = [
       user.email,
-      user.firstname,
-      user.lastname,
+      user.fullname,
       hashedPassword,
       user.role || "user",
     ];
@@ -74,8 +73,7 @@ export const loginUser = async (email, password) => {
       user: {
         id: user.id,
         email: user.email,
-        firstname: user.firstname,
-        lastname: user.lastname,
+        fullname: user.fullname,
       },
     };
   } catch (error) {
