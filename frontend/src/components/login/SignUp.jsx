@@ -67,7 +67,6 @@ const SignUp = ({ toggle }) => {
         spacing={2}
         direction="column"
       >
-        {/* <form className="form sign-up" onSubmit={handleSubmit(onSubmit)}> */}
         <Box
           className="form sign-up"
           component="form"
@@ -78,7 +77,7 @@ const SignUp = ({ toggle }) => {
         >
           <TextField
             id="fullname"
-            label="Full name"
+            label="Full Name"
             {...register("fullname")}
             variant="outlined"
             error={!!errors.fullname}
@@ -124,7 +123,7 @@ const SignUp = ({ toggle }) => {
                 aria-label=""
                 sx={{ cursor: "pointer" }}
               >
-                Sign up here
+                Sign In here
               </Link>
             </div>
           </Box>

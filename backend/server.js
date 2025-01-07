@@ -12,7 +12,7 @@ config();
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
+  origin: process.env.CLIENT_ORIGIN,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowable HTTP methods
   allowedHeaders: "Content-Type,Authorization", // Allowed headers
   credentials: true, // Allows cookies and credentials if necessary

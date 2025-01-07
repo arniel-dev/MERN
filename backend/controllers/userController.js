@@ -76,13 +76,14 @@ export const forgotUserPassword = async (req, res) => {
 
   try {
     const response = await handleForgotPassword(email);
+    console.log("response:", response);
     if (response.success) {
       return res.status(200).json(response);
     } else {
       return res.status(response.status).json(response);
     }
   } catch (error) {
-    console.error("Error forgotpassword:", error);
+    console.log("Error forgotpassword:", error);
     return res.status(500).json({
       success: false,
       message: "forgot password failed. Please try again later.",
@@ -103,13 +104,13 @@ export const resetPassword = async (req, res) => {
 
   try {
     const response = await handleResetPassword(token, newPassword);
-    if (response.success) {
+    if (response?.success) {
       return res.status(200).json(response);
     } else {
       return res.status(response.status).json(response);
     }
   } catch (error) {
-    console.error("Error in Resetting Password:", error);
+    console.log("Error in Resetting Password:", error);
     return res.status(500).json({
       success: false,
       message: "ResetPassword failed. Please try again later.",

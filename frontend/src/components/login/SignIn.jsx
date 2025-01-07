@@ -95,7 +95,7 @@ const SignIn = ({ toggle }) => {
             <Link
               component="b"
               variant="body2"
-              onClick={toggle}
+              onClick={() => navigate("/forgot-password", { replace: true })}
               underline="hover"
               aria-label=""
               sx={{ cursor: "pointer" }}
