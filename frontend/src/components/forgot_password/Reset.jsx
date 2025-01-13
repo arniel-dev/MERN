@@ -10,14 +10,10 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import Link from "@mui/material/Link";
+import Cancel from "./BackToSignIn";
+import Typography from "@mui/material/Typography";
 
 const formSchema = yup.object().shape({
-  fullname: yup.string().required("Full name is required"),
-  email: yup
-    .string()
-    .email("Invalid email format")
-    .required("Email is required"),
   password: yup
     .string()
     .min(6, "Password must be at least 6 characters")
@@ -28,7 +24,7 @@ const formSchema = yup.object().shape({
     .required("Confirm password is required"),
 });
 
-const SignUp = ({ toggle }) => {
+const Reset = ({ token }) => {
   const { setURL, setRequest, status, response, cleanUp, resErrMsg } =
     useAxiosPost();
   const { showToast } = useToast();
@@ -40,16 +36,16 @@ const SignUp = ({ toggle }) => {
   } = useForm({ resolver: yupResolver(formSchema) });
 
   const onSubmit = (data) => {
-    setURL("api/users/signup");
+    setURL(`api/users/reset-password/${token}`);
     setRequest(data);
   };
 
   useEffect(() => {
-    if (status === 201) {
+    if (status === 200) {
       showToast(response?.message, "success");
       cleanUp().then(() => {
         setTimeout(() => {
-          navigate(0);
+          navigate("/", { replace: true });
         }, 1000);
       });
     }
@@ -61,36 +57,20 @@ const SignUp = ({ toggle }) => {
   }, [status, resErrMsg]);
 
   return (
-    <div className="col align-items-center flex-col sign-up">
+    <div className="col align-items-center flex-col reset-pass">
       <Stack
         className="form-wrapper align-items-center"
         spacing={2}
         direction="column"
       >
         <Box
-          className="form sign-up"
+          className="form reset-pass"
           component="form"
           sx={{ "& .MuiTextField-root": { m: 2, width: "90%" } }}
           noValidate
           autoComplete="off"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <TextField
-            id="fullname"
-            label="Full Name"
-            {...register("fullname")}
-            variant="outlined"
-            error={!!errors.fullname}
-            helperText={errors?.fullname?.message}
-          />
-          <TextField
-            id="email"
-            label="Email"
-            {...register("email")}
-            variant="outlined"
-            error={!!errors.email}
-            helperText={errors?.email?.message}
-          />
           <TextField
             id="password"
             label="Password"
@@ -110,31 +90,17 @@ const SignUp = ({ toggle }) => {
             helperText={errors?.confirmPassword?.message}
           />
           <Button sx={{ mt: 2 }} type="submit" variant="contained">
-            Sign up
+            Reset
           </Button>
-          <Box component="div" sx={{ m: 2 }}>
-            <div>
-              <span>Already have an account?</span>
-              <Link
-                component="span"
-                variant="body2"
-                onClick={toggle}
-                underline="hover"
-                aria-label=""
-                sx={{ cursor: "pointer" }}
-              >
-                Sign in here
-              </Link>
-            </div>
-          </Box>
+          <Cancel />
         </Box>
       </Stack>
     </div>
   );
 };
 
-SignUp.propTypes = {
-  toggle: PropTypes.func,
+Reset.propTypes = {
+  token: PropTypes.string,
 };
 
-export default SignUp;
+export default Reset;

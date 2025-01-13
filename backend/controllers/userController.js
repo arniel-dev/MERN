@@ -76,14 +76,13 @@ export const forgotUserPassword = async (req, res) => {
 
   try {
     const response = await handleForgotPassword(email);
-    console.log("response:", response);
+
     if (response.success) {
       return res.status(200).json(response);
     } else {
       return res.status(response.status).json(response);
     }
   } catch (error) {
-    console.log("Error forgotpassword:", error);
     return res.status(500).json({
       success: false,
       message: "forgot password failed. Please try again later.",
@@ -93,17 +92,18 @@ export const forgotUserPassword = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   const { token } = req.params;
-  const { newPassword } = req.body;
-
+  const { password } = req.body;
+  console.log(token);
   // Validate required fields
-  if (!email) {
+  if (!token) {
     return res
       .status(400)
-      .json({ success: false, message: "email is required" });
+      .json({ success: false, message: "token is required" });
   }
 
   try {
-    const response = await handleResetPassword(token, newPassword);
+    const response = await handleResetPassword(token, password);
+    console.log("responseresponse", response);
     if (response?.success) {
       return res.status(200).json(response);
     } else {
